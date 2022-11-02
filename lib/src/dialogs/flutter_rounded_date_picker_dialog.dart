@@ -83,12 +83,10 @@ class FlutterRoundedDatePickerDialog extends StatefulWidget {
   final Function? onMonthChange;
 
   @override
-  _FlutterRoundedDatePickerDialogState createState() =>
-      _FlutterRoundedDatePickerDialogState();
+  _FlutterRoundedDatePickerDialogState createState() => _FlutterRoundedDatePickerDialogState();
 }
 
-class _FlutterRoundedDatePickerDialogState
-    extends State<FlutterRoundedDatePickerDialog> {
+class _FlutterRoundedDatePickerDialogState extends State<FlutterRoundedDatePickerDialog> {
   @override
   void initState() {
     super.initState();
@@ -239,16 +237,13 @@ class _FlutterRoundedDatePickerDialogState
 
     Color backgroundPicker = theme.dialogBackgroundColor;
     if (_mode == DatePickerMode.day) {
-      backgroundPicker = widget.styleDatePicker?.backgroundPicker ??
-          theme.dialogBackgroundColor;
+      backgroundPicker = widget.styleDatePicker?.backgroundPicker ?? theme.dialogBackgroundColor;
     } else {
-      backgroundPicker = widget.styleYearPicker?.backgroundPicker ??
-          theme.dialogBackgroundColor;
+      backgroundPicker = widget.styleYearPicker?.backgroundPicker ?? theme.dialogBackgroundColor;
     }
 
     final Dialog dialog = Dialog(
-      child: OrientationBuilder(
-          builder: (BuildContext context, Orientation orientation) {
+      child: OrientationBuilder(builder: (BuildContext context, Orientation orientation) {
         final Widget header = FlutterRoundedDatePickerHeader(
             selectedDate: _selectedDate,
             mode: _mode,
@@ -260,6 +255,7 @@ class _FlutterRoundedDatePickerDialogState
             description: widget.description,
             fontFamily: widget.fontFamily,
             style: widget.styleDatePicker);
+
         switch (orientation) {
           case Orientation.landscape:
             return Container(
@@ -267,23 +263,28 @@ class _FlutterRoundedDatePickerDialogState
                 color: backgroundPicker,
                 borderRadius: BorderRadius.circular(widget.borderRadius),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Flexible(flex: 1, child: header),
-                  Flexible(
-                    flex: 2, // have the picker take up 2/3 of the dialog width
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Flexible(child: picker),
-                        actions,
-                      ],
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: widget.height ?? MediaQuery.of(context).size.height,
+                    maxWidth: MediaQuery.of(context).size.width * 0.618),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Flexible(flex: 1, child: header),
+                    Flexible(
+                      flex: 2, // have the picker take up 2/3 of the dialog width
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Flexible(child: picker),
+                          actions,
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           case Orientation.portrait:
